@@ -12,12 +12,12 @@ graph = tf.get_default_graph()
 sess = tf.Session()
 
 print("Restoring the model to the default graph ...")
-# print (tf.train.latest_checkpoint(dir_path))
-print(tf.train.NewCheckpointReader(dir_path + 'model.ckpt-667589.index'))
+
 saver = tf.train.import_meta_graph(dir_path + '/model.ckpt-667589.meta')
+print(dir_path + "/model.ckpt-667589")
+# .index
 
-
-saver.restore(sess,tf.train.latest_checkpoint(dir_path))
+saver.restore(sess,tf.train.latest_checkpoint("/Users/uu143986/src/3D/hmr/models/model.ckpt-667589")) # Is it old?
 print("Restoring Done .. ")
 
 print "Saving the model to Protobuf format: ", save_dir
