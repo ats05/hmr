@@ -9,4 +9,4 @@ deepdish>=0.3
 opencv-python
 absl-py
 ipdb
-tensorflow
+tensorflow==1.3.0
