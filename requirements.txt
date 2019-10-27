@@ -1,12 +1,11 @@
 # python requirements
 pip>=9.0
 scipy
-numpy
+numpy==1.16.0
 opendr==0.77
 matplotlib
 scikit-image
-deepdish>=0.3
+deepdish==0.2
 opencv-python
 absl-py
 ipdb
-tensorflow==1.3.0
