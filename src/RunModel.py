@@ -39,7 +39,6 @@ class RunModel(object):
         self.smpl_model_path = config.smpl_model_path
 
         input_size = (self.batch_size, self.img_size, self.img_size, 3)
-        print("imputsize = " + input_size)
         self.images_pl = tf.placeholder(tf.float32, shape=input_size)
 
         # Model Settings
@@ -126,14 +125,18 @@ class RunModel(object):
             self.final_thetas.append(theta_here)
             # Finally)update to end iteration.
             theta_prev = theta_here
-
-
     def prepare(self):
+
+
+
+
+
         print('Restoring checkpoint %s..' % self.load_path)
-        print(self.load_path)
         self.saver.restore(self.sess, self.load_path)
-        print("restoring and saving...")
-        #tf.train.write_graph(self.sess.graph_def, "../models/pb", "saved_model.pb", False)
+
+
+
+
         self.mean_value = self.sess.run(self.mean_var)
 
     def predict(self, images, get_theta=False):
@@ -155,6 +158,25 @@ class RunModel(object):
         Preprocessed to range [-1, 1]
         Runs the model with images.
         """
+
+        # to save model
+        g_1 = tf.Graph()
+
+        # for v in tf.trainable_variables():
+        #   vars[v.value().name] = v.eval(self.sess)
+        #
+        #
+        # g_2 = tf.Graph()
+        # with g_2.as_default():
+        #   for k in vars.keys():
+        #     consts[k] = tf.constant(vars[k])
+
+        tf.train.import_meta_graph('/Users/uu143986/src/3D/hmr/src/../models/model.ckpt-667589meta')
+        tf.train.write_graph(g_2.as_graph_def(), './', 'trained_graph.pb', as_text=False)
+
+
+
+
         feed_dict = {
             self.images_pl: images,
             # self.theta0_pl: self.mean_var,
@@ -167,10 +189,9 @@ class RunModel(object):
             'theta': self.final_thetas[-1],
         }
 
-        #print(tf.saved_model)
-
-
         results = self.sess.run(fetch_dict, feed_dict)
+        # summary_writer = tf.train.SummaryWriter('data', graph=self.sess.graph)
+        # tf.train.write_graph(self.sess.graph_def, "/Users/uu143986/src/3D/hmr/models/Protobufs/1.7.0", "saved_model.pb", False)
 
         # Return joints in original image space.
         joints = results['joints']
