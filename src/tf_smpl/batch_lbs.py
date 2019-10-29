@@ -58,7 +58,7 @@ def batch_rodrigues(theta, name=None):
 
         outer = tf.matmul(r, r, transpose_b=True, name="outer")
 
-        eyes = tf.tile(tf.expand_dims(tf.eye(3), 0), [batch_size, 1, 1])
+        eyes = tf.tile(tf.expand_dims(tf.constant([[1.,0.,0.],[0.,1.,0.],[0.,0.,1]]), 0), [batch_size, 1, 1])
         R = cos * eyes + (1 - cos) * outer + sin * batch_skew(
             r, batch_size=batch_size)
         return R
@@ -83,7 +83,7 @@ def batch_lrotmin(theta, name=None):
 
         # N*23 x 3 x 3
         Rs = batch_rodrigues(tf.reshape(theta, [-1, 3]))
-        lrotmin = tf.reshape(Rs - tf.eye(3), [-1, 207])
+        lrotmin = tf.reshape(Rs - tf.constant([[1.,0.,0.],[0.,1.,0.],[0.,0.,1]]), [-1, 207])
 
         return lrotmin
 

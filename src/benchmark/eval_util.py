@@ -40,6 +40,7 @@ def compute_similarity_transform(S1, S2):
     U, s, Vh = np.linalg.svd(K)
     V = Vh.T
     # Construct Z that fixes the orientation of R to get det(R)=1.
+    print("U.shape[0] : " + U.shape[0])
     Z = np.eye(U.shape[0])
     Z[-1, -1] *= np.sign(np.linalg.det(U.dot(V.T)))
     # Construct R.

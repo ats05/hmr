@@ -39,7 +39,7 @@ class RunModel(object):
         self.smpl_model_path = config.smpl_model_path
 
         input_size = (self.batch_size, self.img_size, self.img_size, 3)
-        self.images_pl = tf.placeholder(tf.float32, shape=input_size)
+        self.images_pl = tf.placeholder(tf.float32, shape=input_size, name='imput_image')
 
         # Model Settings
         self.num_stage = config.num_stage
@@ -136,7 +136,7 @@ class RunModel(object):
 
 
 
-
+        print(self.mean_var)
         self.mean_value = self.sess.run(self.mean_var)
 
     def predict(self, images, get_theta=False):
@@ -160,7 +160,7 @@ class RunModel(object):
         """
 
         # to save model
-        g_1 = tf.Graph()
+        # g_1 = tf.Graph()
 
         # for v in tf.trainable_variables():
         #   vars[v.value().name] = v.eval(self.sess)
@@ -171,12 +171,12 @@ class RunModel(object):
         #   for k in vars.keys():
         #     consts[k] = tf.constant(vars[k])
 
-        tf.train.import_meta_graph('/Users/uu143986/src/3D/hmr/src/../models/model.ckpt-667589meta')
-        tf.train.write_graph(g_2.as_graph_def(), './', 'trained_graph.pb', as_text=False)
+        # tf.train.import_meta_graph('/Users/uu143986/src/3D/hmr/src/../models/model.ckpt-667589.meta')
+        # tf.train.write_graph(g_2.as_graph_def(), './', 'trained_graph.pb', as_text=False)
 
 
 
-
+        print(images)
         feed_dict = {
             self.images_pl: images,
             # self.theta0_pl: self.mean_var,
@@ -188,6 +188,26 @@ class RunModel(object):
             'joints3d': self.all_Js[-1],
             'theta': self.final_thetas[-1],
         }
+        joints  = tf.identity(self.all_kps[-1], name="joints")
+        verts   = tf.identity(self.all_verts[-1], name="verts")
+        cams    = tf.identity(self.all_cams[-1], name="cams")
+        joints3d = tf.identity(self.all_Js[-1], name="joints3d")
+        theta   = tf.identity(self.final_thetas[-1], name="theta")
+        outputs = {
+            'joints': joints,
+            'verts': verts,
+            'cams': cams,
+            'joints3d': joints3d,
+            'theta': theta,
+        }
+
+        #
+        print("saving model...")
+        tf.saved_model.simple_save(self.sess, './models/savedModel', inputs={'imput_image': self.images_pl}, outputs=outputs)
+        # builder = tf.saved_model.builder.SavedModelBuilder('./models/savedModel')
+        # signature = tf.saved_model.predict_signature_def(inputs=feed_dict, outputs=fetch_dict)
+        # builder.add_meta_graph_and_variables(sess=self.sess, tags=[tf.saved_model.tag_constants.SERVING], signature_def_map={'predict': signature})
+        # builder.save()
 
         results = self.sess.run(fetch_dict, feed_dict)
         # summary_writer = tf.train.SummaryWriter('data', graph=self.sess.graph)

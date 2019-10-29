@@ -30,7 +30,7 @@ class SMPL(object):
         # -- Load SMPL params --
         with open(pkl_path, 'rb') as f:
             # dd = pickle.load(f, encoding="latin-1")
-            dd = pickle.load(f) 
+            dd = pickle.load(f)
         # Mean template vertices
         self.v_template = tf.Variable(
             undo_chumpy(dd['v_template']),
@@ -124,8 +124,8 @@ class SMPL(object):
                 batch_rodrigues(tf.reshape(theta, [-1, 3])), [-1, 24, 3, 3])
             with tf.name_scope("lrotmin"):
                 # Ignore global rotation.
-                pose_feature = tf.reshape(Rs[:, 1:, :, :] - tf.eye(3),
-                                          [-1, 207])
+                # pose_feature = tf.reshape(Rs[:, 1:, :, :] - tf.eye(3),[-1, 207])
+                pose_feature = tf.reshape(Rs[:, 1:, :, :] - tf.constant([[1.,0.,0.],[0.,1.,0.],[0.,0.,1]]),[-1, 207])
 
             # (N x 207) x (207, 20670) -> N x 6890 x 3
             v_posed = tf.reshape(
