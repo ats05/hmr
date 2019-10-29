@@ -9,7 +9,7 @@
 
 
 ## モデル変換
-`tensorflowjs_converter --input_format=tf_saved_model --output_node_names='joints,verts,cams,joints3d,theta' --saved_model_tags=serve  "./models/savedModel" "./tfjs"`
+`tensorflowjs_converter --input_format=tf_saved_model --output_node_names='joints,verts,cams,joints3d,theta' --saved_model_tags=serve --quantization_bytes=1  "./models/savedModel" "./tfjs/1byte"`
 
 
 まだ下記エラーが解決できていない。
@@ -38,3 +38,7 @@ ValueError: numpy.ufunc size changed, may indicate binary incompatibility. Expec
 
 numpyのバージョンが合わないと出るらしい
 numpy==1.16.0
+
+
+
+書き出しできた！読み込めるか？
