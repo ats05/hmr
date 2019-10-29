@@ -20,9 +20,10 @@ MatrixDiag, ScatterNd, BatchMatMul
 ```
 
 ScatterNdとBatchMatMulはモジュールのバージョンをあげたらいけた
-keras==1.1.0
-tensorflowjs=0.8.0
 
+tensorflowjs=0.8.0
+numpy==1.16.0
+keras==1.1.0
 matrixdiagが解決できない
 
 ここ参考にしたらいけそう
@@ -37,7 +38,7 @@ tf.constant([[1, 0, 0], [0, -1, 0], [0, 0, -1]])
 ValueError: numpy.ufunc size changed, may indicate binary incompatibility. Expected 216 from C header, got 192 from PyObject
 
 numpyのバージョンが合わないと出るらしい
-numpy==1.16.0
+
 
 
 
