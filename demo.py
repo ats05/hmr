@@ -92,6 +92,8 @@ def visualize(img, proc_param, joints, verts, cam):
 
 def preprocess_image(img_path, json_path=None):
     img = io.imread(img_path)
+    print("----- image shape convert -----")
+    print(img.strides)
     if img.shape[2] == 4:
         img = img[:, :, :3]
 
@@ -113,6 +115,10 @@ def preprocess_image(img_path, json_path=None):
     # Normalize image to [-1, 1]
     crop = 2 * ((crop / 255.) - 0.5)
 
+
+
+    print(dir(crop))
+
     return crop, proc_param, img
 
 
@@ -124,6 +130,7 @@ def main(img_path, json_path=None):
     input_img, proc_param, img = preprocess_image(img_path, json_path)
     # Add batch dimension: 1 x D x D x 3
     input_img = np.expand_dims(input_img, 0)
+    print("image")
 
     # Theta is the 85D vector holding [camera, pose, shape]
     # where camera is 3D [s, tx, ty]

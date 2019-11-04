@@ -4,3 +4,6 @@ dependencies:
   - tensorflow
   - vispy
   - pyqt
+  - opendr
+  - scikit-image
+  - absl-py

@@ -203,7 +203,18 @@ class RunModel(object):
 
         #
         print("saving model...")
-        tf.saved_model.simple_save(self.sess, './models/savedModel', inputs={'imput_image': self.images_pl}, outputs=outputs)
+        #tf.saved_model.simple_save(self.sess, './models/savedModel', inputs={'imput_image': self.images_pl}, outputs=outputs)
+
+        # frozen_graph_def = tf.graph_util.convert_variables_to_constants(
+        #     self.sess,
+        #     self.sess.graph_def,
+        #     ['joints','verts','cams','joints3d','theta']
+        # )
+        #
+        # with open('./models/frozen/frozen_graph.pb', 'wb') as f:
+        #     f.write(frozen_graph_def.SerializeToString())
+
+
         # builder = tf.saved_model.builder.SavedModelBuilder('./models/savedModel')
         # signature = tf.saved_model.predict_signature_def(inputs=feed_dict, outputs=fetch_dict)
         # builder.add_meta_graph_and_variables(sess=self.sess, tags=[tf.saved_model.tag_constants.SERVING], signature_def_map={'predict': signature})

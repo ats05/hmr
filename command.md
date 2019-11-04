@@ -24,6 +24,7 @@ ScatterNdとBatchMatMulはモジュールのバージョンをあげたらいけ
 tensorflowjs=0.8.0
 numpy==1.16.0
 keras==1.1.0
+
 matrixdiagが解決できない
 
 ここ参考にしたらいけそう
@@ -43,3 +44,22 @@ numpyのバージョンが合わないと出るらしい
 
 
 書き出しできた！読み込めるか？
+
+
+ブラウザでエラー。
+```
+.....weights_manifest.json contains neither model topology or manifest for weights.
+```
+
+frozen_modelはやめて、改めてtensorflowjs最新版のconverterで変換
+
+```
+tensorflowjs_converter --input_format=tf_saved_model  --quantization_bytes=1  "./models/savedModel" "./tfjs/1byte"
+```
+
+
+ブラウザで読み込めた！
+
+これで読み込めた
+ `tf.loadGraphModel(path)`
+　
