@@ -36,5 +36,6 @@ def scale_and_crop(image, scale, center, img_size):
         'end_pt': end_pt,
         'img_size': img_size
     }
+    print(proc_param)
 
     return crop, proc_param

@@ -173,14 +173,6 @@ class RunModel(object):
 
         # tf.train.import_meta_graph('/Users/uu143986/src/3D/hmr/src/../models/model.ckpt-667589.meta')
         # tf.train.write_graph(g_2.as_graph_def(), './', 'trained_graph.pb', as_text=False)
-
-
-
-        print(images)
-        feed_dict = {
-            self.images_pl: images,
-            # self.theta0_pl: self.mean_var,
-        }
         fetch_dict = {
             'joints': self.all_kps[-1],
             'verts': self.all_verts[-1],
@@ -201,9 +193,25 @@ class RunModel(object):
             'theta': theta,
         }
 
+
+        # tf.saved_model.simple_save(self.sess, '../tfjs/saved_model', inputs={"input_image": self.images_pl}, outputs={"outputs": outputs})
+        builder = tf.saved_model.builder.SavedModelBuilder('../tfjs/saved_model')
+        signature = tf.saved_model.predict_signature_def(inputs={'input_image': self.images_pl}, outputs={'outputs': outputs})
+        builder.add_meta_graph_and_variables(sess=self.sess,
+                                             tags=[tf.saved_model.tag_constants.SERVING],
+                                             signature_def_map={'predict': signature})
+        builder.save()
+
+
+        feed_dict = {
+            self.images_pl: images,
+            # self.theta0_pl: self.mean_var,
+        }
+
+
+        print(self.images_pl)
         #
         print("saving model...")
-        #tf.saved_model.simple_save(self.sess, './models/savedModel', inputs={'imput_image': self.images_pl}, outputs=outputs)
 
         # frozen_graph_def = tf.graph_util.convert_variables_to_constants(
         #     self.sess,

@@ -54,8 +54,9 @@ numpyのバージョンが合わないと出るらしい
 frozen_modelはやめて、改めてtensorflowjs最新版のconverterで変換
 
 ```
-tensorflowjs_converter --input_format=tf_saved_model  --quantization_bytes=1  "./models/savedModel" "./tfjs/1byte"
+tensorflowjs_converter --input_format=tf_saved_model --output_node_names='joints,verts,cams,joints3d,theta' --saved_model_tags=serve --quantization_bytes=1  "./models/savedModel" "./tfjs/1byte"
 ```
+tensorflowjs_converter --input=tf_saved_model --output_node_names='joints,verts,cams,joints3d,theta' --output_json='model.json' "./models/savedModel"  "./models/savedModel" "./tfjs/1byte"
 
 
 ブラウザで読み込めた！

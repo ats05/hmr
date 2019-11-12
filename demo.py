@@ -93,7 +93,8 @@ def visualize(img, proc_param, joints, verts, cam):
 def preprocess_image(img_path, json_path=None):
     img = io.imread(img_path)
     print("----- image shape convert -----")
-    print(img.strides)
+    print(img.strides);
+
     if img.shape[2] == 4:
         img = img[:, :, :3]
 
@@ -116,7 +117,9 @@ def preprocess_image(img_path, json_path=None):
     crop = 2 * ((crop / 255.) - 0.5)
 
 
-
+    print(crop.strides);
+    print(crop.size);
+    print(crop.shape);
     print(dir(crop))
 
     return crop, proc_param, img
