@@ -142,6 +142,7 @@ def main(img_path, json_path=None):
     joints, verts, cams, joints3d, theta = model.predict(
         input_img, get_theta=True)
 
+    print("--joints--")
     print(joints3d)
 
     visualize(img, proc_param, joints[0], verts[0], cams[0])

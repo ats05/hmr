@@ -195,12 +195,12 @@ class RunModel(object):
 
 
         # tf.saved_model.simple_save(self.sess, '../tfjs/saved_model', inputs={"input_image": self.images_pl}, outputs={"outputs": outputs})
-        builder = tf.saved_model.builder.SavedModelBuilder('../tfjs/saved_model')
-        signature = tf.saved_model.predict_signature_def(inputs={'input_image': self.images_pl}, outputs={'outputs': outputs})
-        builder.add_meta_graph_and_variables(sess=self.sess,
-                                             tags=[tf.saved_model.tag_constants.SERVING],
-                                             signature_def_map={'predict': signature})
-        builder.save()
+        # builder = tf.saved_model.builder.SavedModelBuilder('../tfjs/saved_model')
+        # signature = tf.saved_model.predict_signature_def(inputs={'input_img': self.images_pl}, outputs={'outputs': outputs})
+        # builder.add_meta_graph_and_variables(sess=self.sess,
+        #                                      tags=[tf.saved_model.tag_constants.SERVING],
+        #                                      signature_def_map={'predict': signature})
+        # builder.save()
 
 
         feed_dict = {
@@ -234,6 +234,7 @@ class RunModel(object):
 
         # Return joints in original image space.
         joints = results['joints']
+        print(joints)
         results['joints'] = ((joints + 1) * 0.5) * self.img_size
-
+        print(joints)
         return results
