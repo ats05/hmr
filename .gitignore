@@ -4,3 +4,12 @@ logs*/
 *.DS_Store
 *.pyc
 forrelease.sh
+
+
+# for mobilenet
+coco/
+tf-models/
+neutrMosh/
+./scratch1
+prepared_datasets/
+human_datasets/

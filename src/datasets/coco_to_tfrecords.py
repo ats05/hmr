@@ -14,10 +14,10 @@ from pycocotools.coco import COCO
 
 from .common import convert_to_example, ImageCoder, resize_img
 
-tf.app.flags.DEFINE_string('data_directory', '/scratch1/storage/coco/',
+tf.app.flags.DEFINE_string('data_directory', './scratch1/storage/coco/',
                            'data directory: top of coco')
 tf.app.flags.DEFINE_string('output_directory',
-                           '/scratch1/projects/tf_datasets/coco_wmask/',
+                           './scratch1/projects/tf_datasets/coco_wmask/',
                            'Output data directory')
 
 tf.app.flags.DEFINE_integer('train_shards', 500,
@@ -293,10 +293,10 @@ def add_to_tfrecord(coco, img_id, img_dir, coder, writer, is_train):
 def process_coco(data_dir, out_dir, num_shards, is_train=True):
 
     if is_train:
-        data_type = 'train2014'
+        data_type = 'train2017'
         out_path = join(out_dir, 'train_%04d_wmeta.tfrecord')
     else:
-        data_type = 'val2014'
+        data_type = 'val2017'
         out_path = join(out_dir, 'val_%04d_wmeta.tfrecord')
 
     anno_file = join(data_dir,

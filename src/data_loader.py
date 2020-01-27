@@ -14,7 +14,7 @@ import tensorflow as tf
 from .tf_smpl.batch_lbs import batch_rodrigues
 from .util import data_utils
 
-_3D_DATASETS = ['h36m', 'up', 'mpi_inf_3dhp']
+_3D_DATASETS = ['h36m', 'up', 'mpi_inf_3dhp', 'coco']
 
 
 def num_examples(datasets):

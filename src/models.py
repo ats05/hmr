@@ -10,13 +10,24 @@ Defines networks.
 Helper:
 @get_encoder_fn_separate
 """
-
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import sys
+sys.path.append("/Users/uu143986/anaconda2/envs/py27/lib/python2.7/site-packages/tensorflow/models/research/slim")
+
+
 import tensorflow as tf
 import tensorflow.contrib.slim as slim
+from tensorflow.contrib import layers as contrib_layers
+
+from nets import mobilenet
+
+
+
+
+
 
 from tensorflow.contrib.layers.python.layers.initializers import variance_scaling_initializer
 
@@ -36,18 +47,18 @@ def Encoder_resnet(x, is_training=True, weight_decay=0.001, reuse=False):
     - Shape vector: N x 10
     - variables: tf variables
     """
-    from tensorflow.contrib.slim.python.slim.nets import resnet_v2
-    with tf.name_scope("Encoder_resnet", [x]):
-        with slim.arg_scope(
-                resnet_v2.resnet_arg_scope(weight_decay=weight_decay)):
-            net, end_points = resnet_v2.resnet_v2_50(
-                x,
-                num_classes=None,
-                is_training=is_training,
-                reuse=reuse,
-                scope='resnet_v2_50')
-            net = tf.squeeze(net, axis=[1, 2])
-    variables = tf.contrib.framework.get_variables('resnet_v2_50')
+    from nets import mobilenet
+    # with tf.name_scope("Encoder_resnet", [x]):
+    #     with slim.arg_scope(
+    #             mobilenet.mobilenet_arg_scope(weight_decay=weight_decay)):
+    #         net, end_points = mobilenet.mobilenet(
+    #             x,
+    #             num_classes=None,
+    #             is_training=is_training,
+    #             reuse=reuse,
+    #             scope='mobilenet_v2')
+    #         net = tf.squeeze(net, axis=[1, 2])
+    variables = tf.contrib.framework.get_variables('mobilenet_v2')
     return net, variables
 
 
@@ -65,7 +76,7 @@ def Encoder_fc3_dropout(x,
 
     Outputs:
     - 3D params: N x num_output
-      if orthogonal: 
+      if orthogonal:
            either 85: (3 + 24*3 + 10) or 109 (3 + 24*4 + 10) for factored axis-angle representation
       if perspective:
           86: (f, tx, ty, tz) + 24*3 + 10, or 110 for factored axis-angle.

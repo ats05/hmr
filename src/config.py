@@ -45,7 +45,7 @@ flags.DEFINE_integer('img_size', 224,
                      'Input image size to the network after preprocessing')
 flags.DEFINE_string('data_format', 'NHWC', 'Data format')
 flags.DEFINE_integer('num_stage', 3, '# of times to iterate regressor')
-flags.DEFINE_string('model_type', 'resnet_fc3_dropout',
+flags.DEFINE_string('model_type', 'mobilenet',
                     'Specifies which network to use')
 flags.DEFINE_string(
     'joint_type', 'cocoplus',
@@ -53,10 +53,10 @@ flags.DEFINE_string(
 
 # Training settings:
 # TODO! If you want to train, change this to your 'tf_datasets' or specify it with the flag.
-DATA_DIR = '/scratch1/projects/tf_datasets/'
+DATA_DIR = './prepared_datasets/'
 
 flags.DEFINE_string('data_dir', DATA_DIR, 'Where to save training models')
-# flags.DEFINE_string('log_dir', 'logs', 'Where to save training models')
+flags.DEFINE_string('log_dir', 'logs', 'Where to save training models')
 flags.DEFINE_string('model_dir', None, 'Where model will be saved -- filled automatically')
 flags.DEFINE_integer('log_img_step', 100, 'How often to visualize img during training')
 flags.DEFINE_integer('epoch', 100, '# of epochs to train')
