@@ -47,21 +47,25 @@ def Encoder_resnet(x, is_training=True, weight_decay=0.001, reuse=False):
     - Shape vector: N x 10
     - variables: tf variables
     """
-    from nets import mobilenet
+    from tensorflow.contrib.slim.python.slim.nets import resnet_v2
     with tf.name_scope("Encoder_resnet", [x]):
         with slim.arg_scope(
-                mobilenet.mobilenet_arg_scope(weight_decay=weight_decay)):
-            net, end_points = mobilenet.mobilenet(
+                resnet_v2.resnet_arg_scope(weight_decay=weight_decay)):
+            net, end_points = resnet_v2.resnet_v2_50(
                 x,
                 num_classes=None,
                 is_training=is_training,
                 reuse=reuse,
-                scope='mobilenet_v2')
+                scope='resnet_v2_50')
             net = tf.squeeze(net, axis=[1, 2])
-    variables = tf.contrib.framework.get_variables('mobilenet_v2')
+    variables = tf.contrib.framework.get_variables('resnet_v2_50')
+
     return net, variables
 
 def Encoder_mobilenet(x, is_training=True, weight_decay=0.001, reuse=False):
+    from tensorflow.contrib.slim.python.slim.nets import mobilenet
+    with slim.arg_scope(mobilenet.training_scope()):
+        logits, endpoints = mobilenet.mobilenet(x)
 
     return net, variables
 
