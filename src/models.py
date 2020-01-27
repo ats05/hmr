@@ -65,7 +65,9 @@ def Encoder_resnet(x, is_training=True, weight_decay=0.001, reuse=False):
 def Encoder_mobilenet(x, is_training=True, weight_decay=0.001, reuse=False):
     from tensorflow.contrib.slim.python.slim.nets import mobilenet
     with slim.arg_scope(mobilenet.training_scope()):
-        logits, endpoints = mobilenet.mobilenet(x)
+        net, endpoints = mobilenet.mobilenet(x)
+
+    variables = tf.contrib.framework.get_variables('mobilenet_v2')
 
     return net, variables
 
@@ -118,8 +120,10 @@ def get_encoder_fn_separate(model_type):
     threed_fn = None
     if 'resnet' in model_type:
         encoder_fn = Encoder_resnet
-    if 'mobilenet' in model_type:
+
+    elif 'mobilenet' in model_type:
         encoder_fn = Encoder_mobilenet
+
     else:
         print('Unknown encoder %s!' % model_type)
         exit(1)
