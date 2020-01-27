@@ -48,17 +48,21 @@ def Encoder_resnet(x, is_training=True, weight_decay=0.001, reuse=False):
     - variables: tf variables
     """
     from nets import mobilenet
-    # with tf.name_scope("Encoder_resnet", [x]):
-    #     with slim.arg_scope(
-    #             mobilenet.mobilenet_arg_scope(weight_decay=weight_decay)):
-    #         net, end_points = mobilenet.mobilenet(
-    #             x,
-    #             num_classes=None,
-    #             is_training=is_training,
-    #             reuse=reuse,
-    #             scope='mobilenet_v2')
-    #         net = tf.squeeze(net, axis=[1, 2])
+    with tf.name_scope("Encoder_resnet", [x]):
+        with slim.arg_scope(
+                mobilenet.mobilenet_arg_scope(weight_decay=weight_decay)):
+            net, end_points = mobilenet.mobilenet(
+                x,
+                num_classes=None,
+                is_training=is_training,
+                reuse=reuse,
+                scope='mobilenet_v2')
+            net = tf.squeeze(net, axis=[1, 2])
     variables = tf.contrib.framework.get_variables('mobilenet_v2')
+    return net, variables
+
+def Encoder_mobilenet(x, is_training=True, weight_decay=0.001, reuse=False):
+
     return net, variables
 
 
@@ -110,6 +114,8 @@ def get_encoder_fn_separate(model_type):
     threed_fn = None
     if 'resnet' in model_type:
         encoder_fn = Encoder_resnet
+    if 'mobilenet' in model_type:
+        encoder_fn = Encoder_mobilenet
     else:
         print('Unknown encoder %s!' % model_type)
         exit(1)
