@@ -22,7 +22,7 @@ import tensorflow as tf
 import tensorflow.contrib.slim as slim
 from tensorflow.contrib import layers as contrib_layers
 
-from nets import mobilenet
+from nets.mobilenet import mobilenet_v2
 
 
 
@@ -63,9 +63,10 @@ def Encoder_resnet(x, is_training=True, weight_decay=0.001, reuse=False):
     return net, variables
 
 def Encoder_mobilenet(x, is_training=True, weight_decay=0.001, reuse=False):
-    from tensorflow.contrib.slim.python.slim.nets import mobilenet
-    with slim.arg_scope(mobilenet.training_scope()):
-        net, endpoints = mobilenet.mobilenet(x)
+    # from nets.mobilenet import mobilenet_v2
+    from nets.mobilenet import mobilenet_v2
+    with slim.arg_scope(mobilenet_v2.training_scope()):
+        net, endpoints = mobilenet_v2.mobilenet(x)
 
     variables = tf.contrib.framework.get_variables('mobilenet_v2')
 
@@ -128,13 +129,13 @@ def get_encoder_fn_separate(model_type):
         print('Unknown encoder %s!' % model_type)
         exit(1)
 
-    if 'fc3_dropout' in model_type:
-        threed_fn = Encoder_fc3_dropout
+    # if 'fc3_dropout' in model_type:
+    threed_fn = Encoder_fc3_dropout
 
-    if encoder_fn is None or threed_fn is None:
-        print('Dont know what encoder to use for %s' % model_type)
-        import ipdb
-        ipdb.set_trace()
+    # if encoder_fn is None or threed_fn is None:
+        # print('Dont know what encoder to use for %s' % model_type)
+        # import ipdb
+        # ipdb.set_trace()
 
     return encoder_fn, threed_fn
 

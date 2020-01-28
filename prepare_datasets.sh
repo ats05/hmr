@@ -17,7 +17,7 @@ MPII_DIR=./human_datasets/mpii
 COCO_DIR=./human_datasets/coco
 
 # This is the directory that contains README.txt, S1..S8, etc
-MPI_INF_3DHP_DIR=./scratch1/storage/mpi_inf_3dhp
+MPI_INF_3DHP_DIR=./human_datasets/mpi_inf_3dhp
 
 ## Mosh
 # This is the path to the directory that contains neutrSMPL_* directories

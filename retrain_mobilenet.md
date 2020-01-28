@@ -54,3 +54,35 @@ https://setuptools.readthedocs.io/en/latest/easy_install.html
 
 環境からリセットしてみる
 3.6系にして、tensorflow/modelsを入れる
+
+research modelsがtf2.0用になってたので、合わせる
+`git checkout -b v1.12.0 refs/tags/v1.12.0`
+
+`threed_fn = Encoder_fc3_dropout`
+にたどり着くようif文を除去
+
+はじまったっぽい
+
+
+ライセンスについて考えないと、、、
+
+- COCO : 商用NG
+- LSP : 書いてないから調べる
+- LSPex :
+- mpii :
+- mpi 3d:
+- mosh : そもそもいらないかも
+
+
+商用利用可能で代用できそうなものを探す
+
+参考
+- https://github.com/arXivTimes/arXivTimes/tree/master/datasets
+- https://datasetsearch.research.google.com/search?query=3D
+
+調べる
+- https://storage.googleapis.com/openimages/web/index.html
+- http://www.aisl.cs.tut.ac.jp/database_HDIBPL.html
+- http://rpg.ifi.uzh.ch/davis_data.html
+- http://dfaust.is.tue.mpg.de/
+- http://humaneva.is.tue.mpg.de/ : だめ
