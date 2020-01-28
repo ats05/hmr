@@ -49,7 +49,7 @@ def sample_frames(gt3ds):
 
 
 def get_all_data(base_dir, sub_id, seq_id, cam_ids, all_cam_info):
-    img_dir, anno_path = get_paths(base_dir, sub_id, seq_id)
+    img_dir, anno_path = get_paths(FLAGS.data_directory, sub_id, seq_id)
     # Get data for all cameras.
     frames, _, annot2, annot3 = read_mat(anno_path)
 
@@ -196,7 +196,7 @@ def save_to_tfrecord(out_name, im_paths, gt2ds, gt3ds, cams, num_shards):
         with tf.python_io.TFRecordWriter(tf_filename) as writer:
             j = 0
             while i < len(im_paths) and j < num_shards:
-                if i % 100 == 0:
+                if i % 1000 == 0:
                     print('Reading img %d/%d' % (i, len(im_paths)))
                 success = add_to_tfrecord(im_paths[i], gt2ds[i], gt3ds[i],
                                           cams[i], coder, writer)
@@ -212,18 +212,18 @@ def save_to_tfrecord(out_name, im_paths, gt2ds, gt3ds, cams, num_shards):
 
 
 def process_mpi_inf_3dhp_train(data_dir, out_dir, is_train=False):
-    if is_train:
-        out_dir = join(out_dir, 'train')
-        print('!train set!')
-        sub_ids = range(1, 8)  # No S8!
-        seq_ids = range(1, 3)
-        cam_ids = [0, 1, 2, 4, 5, 6, 7, 8]
-    else:  # Full set!!
-        out_dir = join(out_dir, 'trainval')
-        print('doing the full train-val set!')
-        sub_ids = range(1, 9)
-        seq_ids = range(1, 3)
-        cam_ids = [0, 1, 2, 4, 5, 6, 7, 8]
+    # if is_train:
+    out_dir = join(out_dir, 'train')
+    print('!train set!')
+    sub_ids = range(1, 8)  # No S8!
+    seq_ids = range(1, 3)
+    cam_ids = [0, 1, 2, 4, 5, 6, 7, 8]
+    # else:  # Full set!!
+    #     out_dir = join(out_dir, 'trainval')
+    #     print('doing the full train-val set!')
+    #     sub_ids = range(1, 9)
+    #     seq_ids = range(1, 3)
+    #     cam_ids = [0, 1, 2, 4, 5, 6, 7, 8]
 
     if not exists(out_dir):
         makedirs(out_dir)
@@ -234,7 +234,7 @@ def process_mpi_inf_3dhp_train(data_dir, out_dir, is_train=False):
     # Load all data & shuffle it,,
     all_gt2ds, all_gt3ds, all_img_paths = [], [], []
     all_cams = []
-    all_cam_info = read_camera(data_dir)
+    all_cam_info = read_camera(FLAGS.data_directory)
 
     for sub_id in sub_ids:
         for seq_id in seq_ids:
@@ -243,7 +243,7 @@ def process_mpi_inf_3dhp_train(data_dir, out_dir, is_train=False):
             # img_paths: N list
             # gt2ds/gt3ds: N x 17 x 2, N x 17 x 3
             img_paths, gt2ds, gt3ds, cams = get_all_data(
-                data_dir, sub_id, seq_id, cam_ids, all_cam_info)
+                FLAGS.data_directory, sub_id, seq_id, cam_ids, all_cam_info)
 
             all_img_paths += img_paths
             all_gt2ds.append(gt2ds)
