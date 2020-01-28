@@ -88,10 +88,10 @@ def get_all_data(base_dir, sub_id, seq_id, cam_ids, all_cam_info):
 
 
 def check_good(image, gt2d):
-    h, w, _ = image.shape
+    height, width, _ = image.shape
 
-    x_in = np.logical_and(gt2d[:, 0] < w, gt2d[:, 0] >= 0)
-    y_in = np.logical_and(gt2d[:, 1] < h, gt2d[:, 1] >= 0)
+    x_in = np.logical_and(gt2d[:, 0] < width, gt2d[:, 0] >= 0)
+    y_in = np.logical_and(gt2d[:, 1] < eight, gt2d[:, 1] >= 0)
 
     ok_pts = np.logical_and(x_in, y_in)
 
@@ -116,7 +116,7 @@ def add_to_tfrecord(im_path,
     """
     # Read image
     if not exists(im_path):
-        # print('!!--%s doesnt exist! Skipping..--!!' % im_path)
+        print('!!--%s doesnt exist! Skipping..--!!' % im_path)
         return False
     with tf.gfile.FastGFile(im_path, 'rb') as f:
         image_data = f.read()
@@ -183,32 +183,32 @@ def add_to_tfrecord(im_path,
     return True
 
 
-def save_to_tfrecord(out_name, im_paths, gt2ds, gt3ds, cams, num_shards):
-    coder = ImageCoder()
-    i = 0
-    # Count on shards
-    fidx = 0
-    # Count failures
-    num_bad = 0
-    while i < len(im_paths):
-        tf_filename = out_name % fidx
-        print('Starting tfrecord file %s' % tf_filename)
-        with tf.python_io.TFRecordWriter(tf_filename) as writer:
-            j = 0
-            while i < len(im_paths) and j < num_shards:
-                if i % 1000 == 0:
-                    print('Reading img %d/%d' % (i, len(im_paths)))
-                success = add_to_tfrecord(im_paths[i], gt2ds[i], gt3ds[i],
-                                          cams[i], coder, writer)
-                i += 1
-                if success:
-                    j += 1
-                else:
-                    num_bad += 1
-
-        fidx += 1
-
-    print('Done, wrote to %s, num skipped %d' % (out_name, num_bad))
+# def save_to_tfrecord(out_path, all_img_paths, all_gt2ds, all_gt3ds, all_cams, num_shards):
+#     coder = ImageCoder()
+#     i = 0
+#     # Count on shards
+#     fidx = 0
+#     # Count failures
+#     num_bad = 0
+#     while i < len(all_img_paths):
+#         tf_filename = out_path % fidx
+#         print('Starting tfrecord file %s' % tf_filename)
+#         with tf.python_io.TFRecordWriter(tf_filename) as writer:
+#             j = 0
+#             while i < len(all_img_paths) and j < num_shards:
+#                 if i % 1000 == 0:
+#                     print('Reading img %d/%d' % (i, len(all_img_paths)))
+#                 success = add_to_tfrecord(all_img_paths[i], all_gt2ds[i], all_gt3ds[i],
+#                                           all_cams[i], coder, writer)
+#                 i += 1
+#                 if success:
+#                     j += 1
+#                 else:
+#                     num_bad += 1
+#
+#         fidx += 1
+#
+#     print('Done, wrote to %s, num skipped %d' % (out_path, num_bad))
 
 
 def process_mpi_inf_3dhp_train(data_dir, out_dir, is_train=False):
@@ -261,8 +261,31 @@ def process_mpi_inf_3dhp_train(data_dir, out_dir, is_train=False):
     all_gt3ds = all_gt3ds[shuffle_id]
     all_cams = all_cams[shuffle_id]
 
-    save_to_tfrecord(out_path, all_img_paths, all_gt2ds, all_gt3ds, all_cams,
-                     num_shards)
+    # save_to_tfrecord(out_path, all_img_paths, all_gt2ds, all_gt3ds, all_cams, num_shards)
+    coder = ImageCoder()
+    i = 0
+    # Count on shards
+    fidx = 0
+    # Count failures
+    num_bad = 0
+    while i < len(all_img_paths):
+        tf_filename = out_path % fidx
+        print('Starting tfrecord file %s' % tf_filename)
+        with tf.python_io.TFRecordWriter(tf_filename) as writer:
+            j = 0
+            while i < len(all_img_paths) and j < num_shards:
+                if i % 1000 == 0:
+                    print('Reading img %d/%d' % (i, len(all_img_paths)))
+                success = add_to_tfrecord(all_img_paths[i], all_gt2ds[i], all_gt3ds[i],
+                                          all_cams[i], coder, writer)
+                i += 1
+                if success:
+                    j += 1
+                else:
+                    num_bad += 1
+        fidx += 1
+
+    print('Done, wrote to %s, num skipped %d' % (out_path, num_bad))
 
 
 def main(unused_argv):

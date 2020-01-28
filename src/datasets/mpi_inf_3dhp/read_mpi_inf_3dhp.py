@@ -37,7 +37,7 @@ from os.path import join
 def get_paths(base_dir, sub_id, seq_id):
     data_dir = join(base_dir, 'S%d' % sub_id, 'Seq%d' % seq_id)
     anno_path = join(data_dir, 'annot.mat')
-    img_dir = join(data_dir, 'imageSequence')
+    img_dir = join(data_dir, 'imageData')
     return img_dir, anno_path
 
 
