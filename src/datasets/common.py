@@ -285,7 +285,7 @@ def read_images_from_tfrecords(tf_path, img_size=224, sess=None):
         kp_final = np.vstack((vis * kp_final, vis)).T
         # crop:
         crop = image_pad[start_pt[1]:end_pt[1], start_pt[0]:end_pt[0], :]
-        
+
         # Normalize image to [-1, 1]
         crop = 2 * ((crop / 255.) - 0.5)
 

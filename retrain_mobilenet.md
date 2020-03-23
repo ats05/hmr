@@ -65,12 +65,13 @@ research modelsがtf2.0用になってたので、合わせる
 
 
 ライセンスについて考えないと、、、
+https://github.com/akanazawa/hmr/blob/master/doc/train.md
 
 - COCO : 商用NG
 - LSP : 書いてないから調べる
 - LSPex :
-- mpii :
-- mpi 3d:
+- mpii : 商用ダメかも
+- mpi 3d: 商用NG
 - mosh : そもそもいらないかも
 
 

@@ -56,7 +56,7 @@ def get_all_data(base_dir, sub_id, seq_id, cam_ids, all_cam_info):
     all_gt2ds, all_gt3ds, all_img_paths = [], [], []
     all_cams = []
     for cam_id in cam_ids:
-        base_path = join(img_dir, 'video_%d' % cam_id, 'frame_%06d.jpg')
+        base_path = join(img_dir, 'img_%d' % cam_id + '_%06d.jpg')
         num_frames = annot2[cam_id].shape[0]
         gt2ds = annot2[cam_id].reshape(num_frames, -1, 2)
         gt3ds = annot3[cam_id].reshape(num_frames, -1, 3)
@@ -91,7 +91,7 @@ def check_good(image, gt2d):
     height, width, _ = image.shape
 
     x_in = np.logical_and(gt2d[:, 0] < width, gt2d[:, 0] >= 0)
-    y_in = np.logical_and(gt2d[:, 1] < eight, gt2d[:, 1] >= 0)
+    y_in = np.logical_and(gt2d[:, 1] < height, gt2d[:, 1] >= 0)
 
     ok_pts = np.logical_and(x_in, y_in)
 
